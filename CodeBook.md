@@ -56,12 +56,12 @@ names(df.train)<-df.features[,"nameFeature"];
 minRows<- min(dim(df.trainlavels)[1], dim(df.trainsubject)[1], dim(df.train)[1] )
 df.train <- cbind(activities=df.trainlavels[1:minRows,],subject=df.trainsubject[1:minRows,],df.train[1:minRows,])
 
-### 1.GOAL: Merges the training and the test sets to create one data set.
+## 1.GOAL: Merges the training and the test sets to create one data set.
 > minFeatures <- 1;
 maxFeatures <- 2+dim(df.features)[1]; ##add 2 more to add activities and subject cols 
 df.all <-rbind(df.train[,minFeatures:maxFeatures],df.test[,minFeatures:maxFeatures]);
 
-### 2.GOAL: Extracts only the measurements on the mean and standard deviation for each measurement
+## 2.GOAL: Extracts only the measurements on the mean and standard deviation for each measurement
 > indexColumn <- c(grep("-mean()", names(df.all)), grep("-std()", names(df.all)))
 df.partial<-df.all[,indexColumn];
 names(df.partial)
@@ -74,11 +74,10 @@ for(i in seq(1:dim(df.activity)[1])){
     df.partial[indexactivity,][,"activities"]<-as.character(df.activity[i,"nameActivity"]);
 };
 
-### 4.GOAL: Appropriately labels the data set with descriptive variable names. 
+## 4.GOAL: Appropriately labels the data set with descriptive variable names. 
 > names(df.partial);
 
-
-### 5.GOAL: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+## 5.GOAL: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 > library(dplyr);
 df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
 write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
