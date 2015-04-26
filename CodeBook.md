@@ -84,10 +84,10 @@ unzip("./Dataset.zip");
 33. df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
 
 ### Assign the new names to cols
-34. names(df.partialMean) <- paste("mean-",names(df.partialMean));
+> 34. names(df.partialMean) <- paste0("mean-",names(df.partialMean));
 35. names(df.partialMean)[1]<- "activities";
 36. names(df.partialMean)[2]<- "subject";
 
 ### Saving the dataset to file
-37. write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
+> 37. write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
 
