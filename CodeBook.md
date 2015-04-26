@@ -31,58 +31,54 @@ download.file(fileUrl, destfile = "./Dataset.zip");
 unzip("./Dataset.zip");
 
 ### Load the ActivityLavels:
-> df.activity <- read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header=FALSE );
-names(df.activity)[1]<-"codActivity";
-names(df.activity)[2]<-"nameActivity";
+> 1. df.activity <- read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header=FALSE );
+2. names(df.activity)[1]<-"codActivity";
+3. names(df.activity)[2]<-"nameActivity";
 
 ### Load the featuresLavels:
-> df.features <- read.csv("./UCI HAR Dataset/features.txt", sep=" ", header=FALSE );
-names(df.features)[1]<-"codFeature"; 
-names(df.features)[2]<-"nameFeature";
+> 4. df.features <- read.csv("./UCI HAR Dataset/features.txt", sep=" ", header=FALSE );
+5. names(df.features)[1]<-"codFeature"; 
+6. names(df.features)[2]<-"nameFeature";
 
 ### Load the test data and combine with laveles and subject data:
-> df.test <- read.csv("./UCI HAR Dataset/test/X_test.txt", sep=" ", header=FALSE );
-df.testlavels <- read.csv("./UCI HAR Dataset/test/y_test.txt", sep=" ");
-df.testsubject <- read.csv("./UCI HAR Dataset/test/subject_test.txt", sep=" ");
-names(df.test)<-df.features[,"nameFeature"];
-minRows<- min(dim(df.testlavels)[1], dim(df.testsubject)[1], dim(df.test)[1] )
-df.test <- cbind(activities=df.testlavels[1:minRows,],subject=df.testsubject[1:minRows,],df.test[1:minRows,])
+> 7. df.test <- read.csv("./UCI HAR Dataset/test/X_test.txt", sep=" ", header=FALSE );
+8. df.testlavels <- read.csv("./UCI HAR Dataset/test/y_test.txt", sep=" ");
+9. df.testsubject <- read.csv("./UCI HAR Dataset/test/subject_test.txt", sep=" ");
+10. names(df.test)<-df.features[,"nameFeature"];
+11. minRows<- min(dim(df.testlavels)[1], dim(df.testsubject)[1], dim(df.test)[1] )
+12. df.test <- cbind(activities=df.testlavels[1:minRows,],subject=df.testsubject[1:minRows,],df.test[1:minRows,])
 
 ### Load the train data and combine with laveles and subject data:
-> df.train <- read.csv("./UCI HAR Dataset/train/X_train.txt", sep=" ", header=FALSE );
-df.trainlavels <- read.csv("./UCI HAR Dataset/train/y_train.txt");
-df.trainsubject <- read.csv("./UCI HAR Dataset/train/subject_train.txt", sep=" ");
-names(df.train)<-df.features[,"nameFeature"];
-minRows<- min(dim(df.trainlavels)[1], dim(df.trainsubject)[1], dim(df.train)[1] )
-df.train <- cbind(activities=df.trainlavels[1:minRows,],subject=df.trainsubject[1:minRows,],df.train[1:minRows,])
+> 13. df.train <- read.csv("./UCI HAR Dataset/train/X_train.txt", sep=" ", header=FALSE );
+14. df.trainlavels <- read.csv("./UCI HAR Dataset/train/y_train.txt");
+15. df.trainsubject <- read.csv("./UCI HAR Dataset/train/subject_train.txt", sep=" ");
+16. names(df.train)<-df.features[,"nameFeature"];
+17. minRows<- min(dim(df.trainlavels)[1], dim(df.trainsubject)[1], dim(df.train)[1] )
+18. df.train <- cbind(activities=df.trainlavels[1:minRows,],subject=df.trainsubject[1:minRows,],df.train[1:minRows,])
 
 ## 1.GOAL: Merges the training and the test sets to create one data set.
-> minFeatures <- 1;
-maxFeatures <- 2+dim(df.features)[1]; ##add 2 more to add activities and subject cols 
-df.all <-rbind(df.train[,minFeatures:maxFeatures],df.test[,minFeatures:maxFeatures]);
+> 19. minFeatures <- 1;
+20. maxFeatures <- 2+dim(df.features)[1]; ##add 2 more to add activities and subject cols 
+21. df.all <-rbind(df.train[,minFeatures:maxFeatures],df.test[,minFeatures:maxFeatures]);
 
 ## 2.GOAL: Extracts only the measurements on the mean and standard deviation for each measurement
-> indexColumn <- c(grep("-mean()", names(df.all)), grep("-std()", names(df.all)))
-df.partial<-df.all[,indexColumn];
-names(df.partial)
+> 22. indexColumn <- c(grep("-mean()", names(df.all)), grep("-std()", names(df.all)))
+23. df.partial<-df.all[,indexColumn];
+24. names(df.partial)
 
 ## 3.GOAL: Uses descriptive activity names to name the activities in the data set
-> indexColumn <- c(grep("activities", names(df.all)), grep("subject", names(df.all)),grep("-mean()", names(df.all)), grep("-std()", names(df.all)))
-df.partial<-df.all[,indexColumn];
-for(i in seq(1:dim(df.activity)[1])){ 
-    indexactivity <- df.partial[,"activities"]==i;
-    df.partial[indexactivity,][,"activities"]<-as.character(df.activity[i,"nameActivity"]);
-};
+> 25. indexColumn <- c(grep("activities", names(df.all)), grep("subject", names(df.all)),grep("-mean()",  names(df.all)), grep("-std()", names(df.all)))
+26. df.partial<-df.all[,indexColumn];
+26. for(i in seq(1:dim(df.activity)[1])){ 
+    28. indexactivity <- df.partial[,"activities"]==i;
+    29. df.partial[indexactivity,][,"activities"]<-as.character(df.activity[i,"nameActivity"]);
+30.};
 
 ## 4.GOAL: Appropriately labels the data set with descriptive variable names. 
-> names(df.partial);
+> 31. names(df.partial);
 
 ## 5.GOAL: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-> library(dplyr);
-df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
-write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
-
-
-
-
+> 32. library(dplyr);
+33. df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
+34. write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
 
