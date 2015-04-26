@@ -78,7 +78,16 @@ unzip("./Dataset.zip");
 > 31. names(df.partial);
 
 ## 5.GOAL: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+### Create the new dataset
 > 32. library(dplyr);
 33. df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
-34. write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
+
+### Assign the new names to cols
+34. names(df.partialMean) <- paste("mean-",names(df.partialMean));
+35. names(df.partialMean)[1]<- "activities";
+36. names(df.partialMean)[2]<- "subject";
+
+### Saving the dataset to file
+37. write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
 
