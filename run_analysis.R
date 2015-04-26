@@ -83,4 +83,12 @@ names(df.partial);
 ## with the average of each variable for each activity and each subject.
 library(dplyr);
 df.partialMean <- ddply(df.partial, c("activities","subject"), numcolwise(mean, na.rm = TRUE));
+
+## Assign the new names to columns
+names(df.partialMean) <- paste("mean-",names(df.partialMean));
+names(df.partialMean)[1]<- "activities";
+names(df.partialMean)[2]<- "subject";
+names(df.partialMean)
+
+## Save the data set to file
 write.table(df.partialMean, file = "./dataProject.csv", sep = ",", row.name=FALSE);
