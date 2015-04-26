@@ -25,24 +25,24 @@
 
 ### LOADING THE DATA SETS:
 
-> ## Download the datafile:
-fileUrl= "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip";
+### Download the datafile:
+> fileUrl= "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip";
 download.file(fileUrl, destfile = "./Dataset.zip");
 unzip("./Dataset.zip");
 
-## Load the ActivityLavels:
-df.activity <- read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header=FALSE );
+### Load the ActivityLavels:
+> df.activity <- read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header=FALSE );
 names(df.activity)[1]<-"codActivity";
 names(df.activity)[2]<-"nameActivity";
 
-## Load the featuresLavels:
-df.features <- read.csv("./UCI HAR Dataset/features.txt", sep=" ", header=FALSE );
+### Load the featuresLavels:
+>df.features <- read.csv("./UCI HAR Dataset/features.txt", sep=" ", header=FALSE );
 names(df.features)[1]<-"codFeature";
 names(df.features)[2]<-"nameFeature";
 dim(df.features)
 
-## Load the test data and combine with laveles and subject data:
-df.test <- read.csv("./UCI HAR Dataset/test/X_test.txt", sep=" ", header=FALSE );
+### Load the test data and combine with laveles and subject data:
+>df.test <- read.csv("./UCI HAR Dataset/test/X_test.txt", sep=" ", header=FALSE );
 df.testlavels <- read.csv("./UCI HAR Dataset/test/y_test.txt", sep=" ");
 df.testsubject <- read.csv("./UCI HAR Dataset/test/subject_test.txt", sep=" ");
 
@@ -54,8 +54,8 @@ df.test <- cbind(activities=df.testlavels[1:minRows,],subject=df.testsubject[1:m
 dim(df.test)
 names(df.test);
 
-## Load the train data and combine with laveles and subject data:
-df.train <- read.csv("./UCI HAR Dataset/train/X_train.txt", sep=" ", header=FALSE );
+### Load the train data and combine with laveles and subject data:
+> df.train <- read.csv("./UCI HAR Dataset/train/X_train.txt", sep=" ", header=FALSE );
 df.trainlavels <- read.csv("./UCI HAR Dataset/train/y_train.txt");
 df.trainsubject <- read.csv("./UCI HAR Dataset/train/subject_train.txt", sep=" ");
 
